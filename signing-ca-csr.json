@@ -1,0 +1,24 @@
+{
+  "CN": "EXAMPLE - Signing CA",
+  "key": {
+    "algo": "ecdsa",
+    "size": 256
+  },
+  "names": [
+    {
+      "C": "COUNTRY",
+      "L": "CITY",
+      "O": "ORGANIZATION",
+      "OU": "ORGANIZATIONAL UNIT",
+      "ST": "STATE"
+    }
+  ],
+  "ca": {
+    "expiry": "87600h",
+    "pathlen": 0
+  },
+  "usages": [
+    "cert sign",
+    "crl sign"
+  ]
+}

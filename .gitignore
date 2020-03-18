@@ -1,0 +1,11 @@
+*.pem
+*.key
+*.enc
+*.crt
+*.p12
+*.pfx
+*.p7b
+*.p7c
+*.der
+*.cer
+*.csr
