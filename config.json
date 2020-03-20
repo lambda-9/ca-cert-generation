@@ -6,15 +6,31 @@
     "profiles": {
       "signing-ca": {
         "usages": [
-	  "cert sign",
-	  "crl sign"
-	],
-	"ca_constraint": {
-	  "is_ca": true,
-	  "max_path_len": 0,
-	  "max_path_len_zero": true
-	},
-	"expiry": "87600h"
+         "cert sign",
+          "crl sign"
+        ],
+        "ca_constraint": {
+        "is_ca": true,
+          "max_path_len": 0,
+          "max_path_len_zero": true
+        },
+        "expiry": "87600h"
+      },
+      "client-cert": {
+        "usages": [
+          "signing",
+          "key encipherment",
+          "server auth"
+        ],
+        "expiry": "19800h"
+      },
+      "server-cert": {
+        "usages": [
+          "signing",
+          "key encipherment",
+          "client auth"
+        ],
+        "expiry": "19800h"
       }
     }
   }

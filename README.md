@@ -21,8 +21,11 @@ certificates.
 
 ## Quick start:
 
-1. Edit root-ca-csr.json and signing-ca-csr.json
-2. `./generate.sh`
+### Generate a new root certificate authority
+
+1. `cp -R root-ca-csr-examples <csr-config-dir>`
+2. edit root-ca-csr.json and signing-ca-csr.json in the new directory. Change CNs at least.
+2. `./generate-ca.sh <csr-config-dir>`
 
 Record the private key passphrases somewhere extremely safe. Store
 root-ca-key-enc.pem (the root CA private key) somewhere extremely safe. It
