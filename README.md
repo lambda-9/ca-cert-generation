@@ -14,12 +14,12 @@ The signing CA key pair (both the public key and private key) must be kept
 online in a secured and trusted environment in order to sign client or server
 certificates.
 
-## Prerequisites:
+## Prerequisites
 
 - cfssl
 - openssl
 
-## Quick start:
+## Quick start
 
 ### Generate a new root certificate authority
 
