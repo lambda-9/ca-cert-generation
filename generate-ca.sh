@@ -22,6 +22,25 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+encrypt_key() {
+  local keyname=$1
+  local description=$2
+
+  echo "--\n>> Preparing to encrypt the ${description} private key"
+  openssl ec -aes256 -in ${OUTPUT_DIR}/${keyname}.pem -out ${OUTPUT_DIR}/${keyname}-enc.pem
+  rm -f ${OUTPUT_DIR}/${keyname}.pem
+}
+
+verify_cert() {
+  local cert=$1
+  local ca=$2
+
+  echo "--\n>> Verifying ${cert} validates against ${ca}"
+  openssl verify -CAfile ${OUTPUT_DIR}/${ca}.pem ${OUTPUT_DIR}/${cert}.pem
+  return $?
+}
+
+
 if ! command_exists cfssl ; then
   echo >&2 'cfssl is not in PATH'
   exit 1
@@ -63,13 +82,9 @@ cfssl sign -ca ${OUTPUT_DIR}/root-ca.pem -ca-key ${OUTPUT_DIR}/root-ca-key.pem \
   --config $CONFIG --profile $SIGNING_CONFIG_PROFILE ${OUTPUT_DIR}/signing-ca.csr \
   | cfssljson -bare ${OUTPUT_DIR}/signing-ca
 
-echo "--\n>> Preparing to encrypt the ROOT CA private key"
-openssl ec -aes256 -in ${OUTPUT_DIR}/root-ca-key.pem -out ${OUTPUT_DIR}/root-ca-key-enc.pem
-rm -f ${OUTPUT_DIR}/root-ca-key.pem
 
-echo "--\n>> Preparing to encrypt the Signing CA private key"
-openssl ec -aes256 -in ${OUTPUT_DIR}/signing-ca-key.pem -out ${OUTPUT_DIR}/signing-ca-key-enc.pem
-rm -f ${OUTPUT_DIR}/signing-ca-key.pem
+encrypt_key "root-ca-key" "ROOT CA"
+encrypt_key "signing-ca-key" "Signing CA"
+verify_cert "signing-ca" "root-ca"
 
-echo "--\n>> Verifying the signing CA was correctly signed by the root CA"
-openssl verify -CAfile ${OUTPUT_DIR}/root-ca.pem ${OUTPUT_DIR}/signing-ca.pem
+exit $?
